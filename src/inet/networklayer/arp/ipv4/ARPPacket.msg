@@ -18,8 +18,8 @@
 
 import inet.common.INETDefs;
 import inet.common.packet.chunk.Chunk;
-import inet.linklayer.common.MACAddress;
-import inet.networklayer.contract.ipv4.IPv4Address;
+import inet.linklayer.common.MacAddress;
+import inet.networklayer.contract.ipv4.Ipv4Address;
 
 namespace inet;
 
@@ -33,7 +33,7 @@ cplusplus {{
 //
 // The list of practically important ARP opcodes
 //
-enum ARPOpcode
+enum ArpOpcode
 {
 
     ARP_REQUEST = 1;      // Request. RFC 826
@@ -53,14 +53,14 @@ enum ARPOpcode
 //   - hardware address length (6)
 //   - protocol address length (4)
 //
-class ARPPacket extends FieldsChunk
+class ArpPacket extends FieldsChunk
 {
     chunkLength = B(ARP_HEADER_BYTES);
-    ARPOpcode opcode;
-    MACAddress srcMACAddress;
-    MACAddress destMACAddress;
-    IPv4Address srcIPAddress;
-    IPv4Address destIPAddress;
+    ArpOpcode opcode;
+    MacAddress srcMACAddress;
+    MacAddress destMACAddress;
+    Ipv4Address srcIPAddress;
+    Ipv4Address destIPAddress;
 }
 
 

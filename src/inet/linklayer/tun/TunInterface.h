@@ -24,7 +24,7 @@
 
 namespace inet {
 
-class INET_API TunInterface : public MACBase
+class INET_API TunInterface : public MacBase
 {
     protected:
         static simsignal_t packetSentToLowerSignal;

@@ -19,7 +19,7 @@
 
 import inet.common.INETDefs;
 import inet.common.packet.chunk.Chunk;
-import inet.networklayer.common.IPProtocolId;
+import inet.networklayer.common.IpProtocolId;
 import inet.networklayer.common.L3Address;
 
 cplusplus {{
@@ -38,8 +38,8 @@ class INET_API NetworkHeaderBase : public FieldsChunk
     virtual void setSourceAddress(const L3Address& address) = 0;
     virtual L3Address getDestinationAddress() const = 0;
     virtual void setDestinationAddress(const L3Address& address) = 0;
-    virtual IPProtocolId getProtocolId() const = 0;
-    virtual void setProtocolId(IPProtocolId protocol) = 0;
+    virtual IpProtocolId getProtocolId() const = 0;
+    virtual void setProtocolId(IpProtocolId protocol) = 0;
     virtual ConstProtocol *getProtocol() const = 0;
     virtual void setProtocol(ConstProtocol *protocol) = 0;
 };
@@ -58,7 +58,7 @@ class NetworkHeaderBase extends FieldsChunk
 
     L3Address sourceAddress @opaque;
     L3Address destinationAddress @opaque;
-    IPProtocolId protocolId;
+    IpProtocolId protocolId;
     ConstProtocol *protocol;
 };
 

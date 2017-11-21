@@ -35,10 +35,10 @@ cplusplus {{
 namespace inet::tcp;
 
 class ReorderBuffer extends cNamedObject { @existingClass; @descriptor(false); }
-class TCPSACKRexmitQueue { @existingClass; @descriptor(false); }
-class TCPAlgorithm extends cObject { @existingClass; @descriptor(false); }
+class TcpSackRexmitQueue { @existingClass; @descriptor(false); }
+class TcpAlgorithm extends cObject { @existingClass; @descriptor(false); }
 
-struct TCPStateVariables
+struct TcpStateVariables
 {
     @existingClass(true);
     @descriptor(readonly);
@@ -155,21 +155,21 @@ struct TCPStateVariables
     uint32_t tcpRcvQueueDrops;    // number of drops in tcp receive queue
 };
 
-class TCPSendQueue extends cObject
+class TcpSendQueue extends cObject
 {
     @existingClass(true);
     @descriptor(readonly);
     ChunkQueue dataBuffer;
 }
 
-class TCPReceiveQueue extends cObject
+class TcpReceiveQueue extends cObject
 {
     @existingClass(true);
     @descriptor(readonly);
     ReorderBuffer reorderBuffer;
 }
 
-class TCPConnection extends cObject
+class TcpConnection extends cObject
 {
     @existingClass(true);
     @descriptor(readonly);
@@ -183,14 +183,14 @@ class TCPConnection extends cObject
     int localPort;
     int remotePort;
 
-    TCPStateVariables *state;
+    TcpStateVariables *state;
 
     // TCP queues
-    TCPSendQueue *sendQueue;
-    TCPReceiveQueue *receiveQueue;
-    TCPSACKRexmitQueue *rexmitQueue;
+    TcpSendQueue *sendQueue;
+    TcpReceiveQueue *receiveQueue;
+    TcpSackRexmitQueue *rexmitQueue;
 
-    TCPAlgorithm *tcpAlgorithm;
+    TcpAlgorithm *tcpAlgorithm;
     int fsmState @readonly;
 };
 

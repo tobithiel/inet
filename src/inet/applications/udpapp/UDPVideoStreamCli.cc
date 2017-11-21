@@ -25,11 +25,11 @@
 
 namespace inet {
 
-Define_Module(UDPVideoStreamCli);
+Define_Module(UdpVideoStreamCli);
 
-simsignal_t UDPVideoStreamCli::rcvdPkSignal = registerSignal("rcvdPk");
+simsignal_t UdpVideoStreamCli::rcvdPkSignal = registerSignal("rcvdPk");
 
-void UDPVideoStreamCli::initialize(int stage)
+void UdpVideoStreamCli::initialize(int stage)
 {
     ApplicationBase::initialize(stage);
 
@@ -38,12 +38,12 @@ void UDPVideoStreamCli::initialize(int stage)
     }
 }
 
-void UDPVideoStreamCli::finish()
+void UdpVideoStreamCli::finish()
 {
     ApplicationBase::finish();
 }
 
-void UDPVideoStreamCli::handleMessageWhenUp(cMessage *msg)
+void UdpVideoStreamCli::handleMessageWhenUp(cMessage *msg)
 {
     if (msg->isSelfMessage()) {
         requestStream();
@@ -61,7 +61,7 @@ void UDPVideoStreamCli::handleMessageWhenUp(cMessage *msg)
     }
 }
 
-void UDPVideoStreamCli::requestStream()
+void UdpVideoStreamCli::requestStream()
 {
     int svrPort = par("serverPort");
     int localPort = par("localPort");
@@ -85,14 +85,14 @@ void UDPVideoStreamCli::requestStream()
     socket.sendTo(pk, svrAddr, svrPort);
 }
 
-void UDPVideoStreamCli::receiveStream(Packet *pk)
+void UdpVideoStreamCli::receiveStream(Packet *pk)
 {
-    EV_INFO << "Video stream packet: " << UDPSocket::getReceivedPacketInfo(pk) << endl;
+    EV_INFO << "Video stream packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
     emit(rcvdPkSignal, pk);
     delete pk;
 }
 
-bool UDPVideoStreamCli::handleNodeStart(IDoneCallback *doneCallback)
+bool UdpVideoStreamCli::handleNodeStart(IDoneCallback *doneCallback)
 {
     simtime_t startTimePar = par("startTime");
     simtime_t startTime = std::max(startTimePar, simTime());
@@ -100,14 +100,14 @@ bool UDPVideoStreamCli::handleNodeStart(IDoneCallback *doneCallback)
     return true;
 }
 
-bool UDPVideoStreamCli::handleNodeShutdown(IDoneCallback *doneCallback)
+bool UdpVideoStreamCli::handleNodeShutdown(IDoneCallback *doneCallback)
 {
     cancelEvent(selfMsg);
     //TODO if(socket.isOpened()) socket.close();
     return true;
 }
 
-void UDPVideoStreamCli::handleNodeCrash()
+void UdpVideoStreamCli::handleNodeCrash()
 {
     cancelEvent(selfMsg);
 }

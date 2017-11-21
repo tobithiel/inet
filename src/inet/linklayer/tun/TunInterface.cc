@@ -36,7 +36,7 @@ simsignal_t TunInterface::packetReceivedFromUpperSignal = registerSignal("packet
 
 void TunInterface::initialize(int stage)
 {
-    MACBase::initialize(stage);
+    MacBase::initialize(stage);
     if (stage == INITSTAGE_LOCAL)
         registerInterface();
 }

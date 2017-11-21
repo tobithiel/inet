@@ -32,7 +32,7 @@ class MpduGen : public ApplicationBase
 {
 protected:
     int localPort = -1, destPort = -1;
-    UDPSocket socket;
+    UdpSocket socket;
 
     static simsignal_t sentPkSignal;
     static simsignal_t rcvdPkSignal;

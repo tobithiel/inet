@@ -25,11 +25,11 @@
 
 namespace inet {
 
-Define_Module(TCPSinkApp);
+Define_Module(TcpSinkApp);
 
-simsignal_t TCPSinkApp::rcvdPkSignal = registerSignal("rcvdPk");
+simsignal_t TcpSinkApp::rcvdPkSignal = registerSignal("rcvdPk");
 
-void TCPSinkApp::initialize(int stage)
+void TcpSinkApp::initialize(int stage)
 {
     cSimpleModule::initialize(stage);
 
@@ -52,7 +52,7 @@ void TCPSinkApp::initialize(int stage)
     }
 }
 
-void TCPSinkApp::handleMessage(cMessage *msg)
+void TcpSinkApp::handleMessage(cMessage *msg)
 {
     if (msg->getKind() == TCP_I_PEER_CLOSED) {
         // we close too
@@ -79,14 +79,14 @@ void TCPSinkApp::handleMessage(cMessage *msg)
     }
 }
 
-void TCPSinkApp::finish()
+void TcpSinkApp::finish()
 {
 }
 
-void TCPSinkApp::refreshDisplay() const
+void TcpSinkApp::refreshDisplay() const
 {
     std::ostringstream os;
-    os << TCPSocket::stateName(socket.getState()) << "\nrcvd: " << bytesRcvd << " bytes";
+    os << TcpSocket::stateName(socket.getState()) << "\nrcvd: " << bytesRcvd << " bytes";
     getDisplayString().setTagArg("t", 0, os.str().c_str());
 }
 

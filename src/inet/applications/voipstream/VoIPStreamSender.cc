@@ -28,15 +28,15 @@ extern "C" {
 #include <libavutil/opt.h>
 }
 
-Define_Module(VoIPStreamSender);
+Define_Module(VoipStreamSender);
 
-simsignal_t VoIPStreamSender::sentPkSignal = registerSignal("sentPk");
+simsignal_t VoipStreamSender::sentPkSignal = registerSignal("sentPk");
 
-VoIPStreamSender::VoIPStreamSender()
+VoipStreamSender::VoipStreamSender()
 {
 }
 
-VoIPStreamSender::~VoIPStreamSender()
+VoipStreamSender::~VoipStreamSender()
 {
     if (pEncoderCtx) {
         avcodec_close(pEncoderCtx);
@@ -46,7 +46,7 @@ VoIPStreamSender::~VoIPStreamSender()
     av_free_packet(&packet);
 }
 
-VoIPStreamSender::Buffer::Buffer() :
+VoipStreamSender::Buffer::Buffer() :
     samples(nullptr),
     bufferSize(0),
     readOffset(0),
@@ -54,12 +54,12 @@ VoIPStreamSender::Buffer::Buffer() :
 {
 }
 
-VoIPStreamSender::Buffer::~Buffer()
+VoipStreamSender::Buffer::~Buffer()
 {
     delete[] samples;
 }
 
-void VoIPStreamSender::Buffer::clear(int framesize)
+void VoipStreamSender::Buffer::clear(int framesize)
 {
     int newsize = BUFSIZE + framesize;
     if (bufferSize != newsize) {
@@ -71,7 +71,7 @@ void VoIPStreamSender::Buffer::clear(int framesize)
     writeOffset = 0;
 }
 
-void VoIPStreamSender::initialize(int stage)
+void VoipStreamSender::initialize(int stage)
 {
     if (stage == INITSTAGE_LOCAL) {
         voipHeaderSize = par("voipHeaderSize");
@@ -139,7 +139,7 @@ void VoIPStreamSender::initialize(int stage)
     }
 }
 
-void VoIPStreamSender::handleMessage(cMessage *msg)
+void VoipStreamSender::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage()) {
         Packet *packet;
@@ -171,7 +171,7 @@ void VoIPStreamSender::handleMessage(cMessage *msg)
         delete msg;
 }
 
-void VoIPStreamSender::finish()
+void VoipStreamSender::finish()
 {
     av_free_packet(&packet);
     outFile.close();
@@ -194,7 +194,7 @@ void VoIPStreamSender::finish()
     }
 }
 
-void VoIPStreamSender::openSoundFile(const char *name)
+void VoipStreamSender::openSoundFile(const char *name)
 {
     int ret;
 
@@ -301,7 +301,7 @@ void VoIPStreamSender::openSoundFile(const char *name)
     sampleBuffer.clear(samplesPerPacket * av_get_bytes_per_sample(pEncoderCtx->sample_fmt));
 }
 
-Packet *VoIPStreamSender::generatePacket()
+Packet *VoipStreamSender::generatePacket()
 {
     readFrame();
 
@@ -313,7 +313,7 @@ Packet *VoIPStreamSender::generatePacket()
     int inBytes = samples * bytesPerInSample;
     bool isSilent = checkSilence(pEncoderCtx->sample_fmt, sampleBuffer.readPtr(), samples);
     Packet *pk = new Packet();
-    const auto& vp = makeShared<VoIPStreamPacket>();
+    const auto& vp = makeShared<VoipStreamPacket>();
 
     AVPacket opacket;
     av_init_packet(&opacket);
@@ -377,7 +377,7 @@ Packet *VoIPStreamSender::generatePacket()
     return pk;
 }
 
-bool VoIPStreamSender::checkSilence(AVSampleFormat sampleFormat, void *_buf, int samples)
+bool VoipStreamSender::checkSilence(AVSampleFormat sampleFormat, void *_buf, int samples)
 {
     int max = 0;
     int i;
@@ -422,7 +422,7 @@ bool VoIPStreamSender::checkSilence(AVSampleFormat sampleFormat, void *_buf, int
     return max < voipSilenceThreshold;
 }
 
-void VoIPStreamSender::Buffer::align()
+void VoipStreamSender::Buffer::align()
 {
     if (readOffset) {
         if (length())
@@ -432,7 +432,7 @@ void VoIPStreamSender::Buffer::align()
     }
 }
 
-void VoIPStreamSender::readFrame()
+void VoipStreamSender::readFrame()
 {
     short int inBytesPerSample = av_get_bytes_per_sample(pEncoderCtx->sample_fmt);
     short int outBytesPerSample = av_get_bytes_per_sample(pCodecCtx->sample_fmt);

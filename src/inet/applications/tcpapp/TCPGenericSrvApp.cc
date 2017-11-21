@@ -28,12 +28,12 @@
 
 namespace inet {
 
-Define_Module(TCPGenericSrvApp);
+Define_Module(TcpGenericSrvApp);
 
-simsignal_t TCPGenericSrvApp::rcvdPkSignal = registerSignal("rcvdPk");
-simsignal_t TCPGenericSrvApp::sentPkSignal = registerSignal("sentPk");
+simsignal_t TcpGenericSrvApp::rcvdPkSignal = registerSignal("rcvdPk");
+simsignal_t TcpGenericSrvApp::sentPkSignal = registerSignal("sentPk");
 
-void TCPGenericSrvApp::initialize(int stage)
+void TcpGenericSrvApp::initialize(int stage)
 {
     cSimpleModule::initialize(stage);
 
@@ -64,7 +64,7 @@ void TCPGenericSrvApp::initialize(int stage)
     }
 }
 
-void TCPGenericSrvApp::sendOrSchedule(cMessage *msg, simtime_t delay)
+void TcpGenericSrvApp::sendOrSchedule(cMessage *msg, simtime_t delay)
 {
     if (delay == 0)
         sendBack(msg);
@@ -72,7 +72,7 @@ void TCPGenericSrvApp::sendOrSchedule(cMessage *msg, simtime_t delay)
         scheduleAt(simTime() + delay, msg);
 }
 
-void TCPGenericSrvApp::sendBack(cMessage *msg)
+void TcpGenericSrvApp::sendBack(cMessage *msg)
 {
     cPacket *packet = dynamic_cast<cPacket *>(msg);
 
@@ -91,7 +91,7 @@ void TCPGenericSrvApp::sendBack(cMessage *msg)
     send(msg, "socketOut");
 }
 
-void TCPGenericSrvApp::handleMessage(cMessage *msg)
+void TcpGenericSrvApp::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage()) {
         sendBack(msg);
@@ -146,7 +146,7 @@ void TCPGenericSrvApp::handleMessage(cMessage *msg)
         if (doClose) {
             cMessage *outMsg = new cMessage("close");
             outMsg->setKind(TCP_C_CLOSE);
-            TCPCommand *cmd = new TCPCommand();
+            TcpCommand *cmd = new TcpCommand();
             outMsg->ensureTag<SocketReq>()->setSocketId(connId);
             outMsg->setControlInfo(cmd);
             sendOrSchedule(outMsg, delay + maxMsgDelay);
@@ -161,14 +161,14 @@ void TCPGenericSrvApp::handleMessage(cMessage *msg)
     }
 }
 
-void TCPGenericSrvApp::refreshDisplay() const
+void TcpGenericSrvApp::refreshDisplay() const
 {
     char buf[64];
     sprintf(buf, "rcvd: %ld pks %ld bytes\nsent: %ld pks %ld bytes", msgsRcvd, bytesRcvd, msgsSent, bytesSent);
     getDisplayString().setTagArg("t", 0, buf);
 }
 
-void TCPGenericSrvApp::finish()
+void TcpGenericSrvApp::finish()
 {
     EV_INFO << getFullPath() << ": sent " << bytesSent << " bytes in " << msgsSent << " packets\n";
     EV_INFO << getFullPath() << ": received " << bytesRcvd << " bytes in " << msgsRcvd << " packets\n";

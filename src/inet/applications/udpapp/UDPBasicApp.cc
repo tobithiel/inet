@@ -27,18 +27,18 @@
 
 namespace inet {
 
-Define_Module(UDPBasicApp);
+Define_Module(UdpBasicApp);
 
-simsignal_t UDPBasicApp::sentPkSignal = registerSignal("sentPk");
-simsignal_t UDPBasicApp::rcvdPkSignal = registerSignal("rcvdPk");
+simsignal_t UdpBasicApp::sentPkSignal = registerSignal("sentPk");
+simsignal_t UdpBasicApp::rcvdPkSignal = registerSignal("rcvdPk");
 
 
-UDPBasicApp::~UDPBasicApp()
+UdpBasicApp::~UdpBasicApp()
 {
     cancelAndDelete(selfMsg);
 }
 
-void UDPBasicApp::initialize(int stage)
+void UdpBasicApp::initialize(int stage)
 {
     ApplicationBase::initialize(stage);
 
@@ -59,14 +59,14 @@ void UDPBasicApp::initialize(int stage)
     }
 }
 
-void UDPBasicApp::finish()
+void UdpBasicApp::finish()
 {
     recordScalar("packets sent", numSent);
     recordScalar("packets received", numReceived);
     ApplicationBase::finish();
 }
 
-void UDPBasicApp::setSocketOptions()
+void UdpBasicApp::setSocketOptions()
 {
     int timeToLive = par("timeToLive");
     if (timeToLive != -1)
@@ -96,7 +96,7 @@ void UDPBasicApp::setSocketOptions()
     }
 }
 
-L3Address UDPBasicApp::chooseDestAddr()
+L3Address UdpBasicApp::chooseDestAddr()
 {
     int k = intrand(destAddresses.size());
     if (destAddresses[k].isUnspecified() || destAddresses[k].isLinkLocal()) {
@@ -105,7 +105,7 @@ L3Address UDPBasicApp::chooseDestAddr()
     return destAddresses[k];
 }
 
-void UDPBasicApp::sendPacket()
+void UdpBasicApp::sendPacket()
 {
     std::ostringstream str;
     str << packetName << "-" << numSent;
@@ -121,7 +121,7 @@ void UDPBasicApp::sendPacket()
     numSent++;
 }
 
-void UDPBasicApp::processStart()
+void UdpBasicApp::processStart()
 {
     socket.setOutputGate(gate("socketOut"));
     const char *localAddress = par("localAddress");
@@ -153,7 +153,7 @@ void UDPBasicApp::processStart()
     }
 }
 
-void UDPBasicApp::processSend()
+void UdpBasicApp::processSend()
 {
     sendPacket();
     simtime_t d = simTime() + par("sendInterval").doubleValue();
@@ -167,12 +167,12 @@ void UDPBasicApp::processSend()
     }
 }
 
-void UDPBasicApp::processStop()
+void UdpBasicApp::processStop()
 {
     socket.close();
 }
 
-void UDPBasicApp::handleMessageWhenUp(cMessage *msg)
+void UdpBasicApp::handleMessageWhenUp(cMessage *msg)
 {
     if (msg->isSelfMessage()) {
         ASSERT(msg == selfMsg);
@@ -206,22 +206,22 @@ void UDPBasicApp::handleMessageWhenUp(cMessage *msg)
     }
 }
 
-void UDPBasicApp::refreshDisplay() const
+void UdpBasicApp::refreshDisplay() const
 {
     char buf[100];
     sprintf(buf, "rcvd: %d pks\nsent: %d pks", numReceived, numSent);
     getDisplayString().setTagArg("t", 0, buf);
 }
 
-void UDPBasicApp::processPacket(cPacket *pk)
+void UdpBasicApp::processPacket(cPacket *pk)
 {
     emit(rcvdPkSignal, pk);
-    EV_INFO << "Received packet: " << UDPSocket::getReceivedPacketInfo(pk) << endl;
+    EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
     delete pk;
     numReceived++;
 }
 
-bool UDPBasicApp::handleNodeStart(IDoneCallback *doneCallback)
+bool UdpBasicApp::handleNodeStart(IDoneCallback *doneCallback)
 {
     simtime_t start = std::max(startTime, simTime());
     if ((stopTime < SIMTIME_ZERO) || (start < stopTime) || (start == stopTime && startTime == stopTime)) {
@@ -231,7 +231,7 @@ bool UDPBasicApp::handleNodeStart(IDoneCallback *doneCallback)
     return true;
 }
 
-bool UDPBasicApp::handleNodeShutdown(IDoneCallback *doneCallback)
+bool UdpBasicApp::handleNodeShutdown(IDoneCallback *doneCallback)
 {
     if (selfMsg)
         cancelEvent(selfMsg);
@@ -239,7 +239,7 @@ bool UDPBasicApp::handleNodeShutdown(IDoneCallback *doneCallback)
     return true;
 }
 
-void UDPBasicApp::handleNodeCrash()
+void UdpBasicApp::handleNodeCrash()
 {
     if (selfMsg)
         cancelEvent(selfMsg);

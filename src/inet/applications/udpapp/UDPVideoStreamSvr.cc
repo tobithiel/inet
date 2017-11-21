@@ -25,25 +25,25 @@
 
 namespace inet {
 
-Define_Module(UDPVideoStreamSvr);
+Define_Module(UdpVideoStreamSvr);
 
-simsignal_t UDPVideoStreamSvr::reqStreamBytesSignal = registerSignal("reqStreamBytes");
-simsignal_t UDPVideoStreamSvr::sentPkSignal = registerSignal("sentPk");
+simsignal_t UdpVideoStreamSvr::reqStreamBytesSignal = registerSignal("reqStreamBytes");
+simsignal_t UdpVideoStreamSvr::sentPkSignal = registerSignal("sentPk");
 
-inline std::ostream& operator<<(std::ostream& out, const UDPVideoStreamSvr::VideoStreamData& d)
+inline std::ostream& operator<<(std::ostream& out, const UdpVideoStreamSvr::VideoStreamData& d)
 {
     out << "client=" << d.clientAddr << ":" << d.clientPort
         << "  size=" << d.videoSize << "  pksent=" << d.numPkSent << "  bytesleft=" << d.bytesLeft;
     return out;
 }
 
-UDPVideoStreamSvr::~UDPVideoStreamSvr()
+UdpVideoStreamSvr::~UdpVideoStreamSvr()
 {
     for (auto & elem : streams)
         cancelAndDelete(elem.second.timer);
 }
 
-void UDPVideoStreamSvr::initialize(int stage)
+void UdpVideoStreamSvr::initialize(int stage)
 {
     ApplicationBase::initialize(stage);
 
@@ -61,11 +61,11 @@ void UDPVideoStreamSvr::initialize(int stage)
     }
 }
 
-void UDPVideoStreamSvr::finish()
+void UdpVideoStreamSvr::finish()
 {
 }
 
-void UDPVideoStreamSvr::handleMessageWhenUp(cMessage *msg)
+void UdpVideoStreamSvr::handleMessageWhenUp(cMessage *msg)
 {
     if (msg->isSelfMessage()) {
         // timer for a particular video stream expired, send packet
@@ -84,7 +84,7 @@ void UDPVideoStreamSvr::handleMessageWhenUp(cMessage *msg)
     }
 }
 
-void UDPVideoStreamSvr::processStreamRequest(Packet *msg)
+void UdpVideoStreamSvr::processStreamRequest(Packet *msg)
 {
     // register video stream...
     cMessage *timer = new cMessage("VideoStreamTmr");
@@ -105,7 +105,7 @@ void UDPVideoStreamSvr::processStreamRequest(Packet *msg)
     sendStreamData(timer);
 }
 
-void UDPVideoStreamSvr::sendStreamData(cMessage *timer)
+void UdpVideoStreamSvr::sendStreamData(cMessage *timer)
 {
     auto it = streams.find(timer->getId());
     if (it == streams.end())
@@ -141,14 +141,14 @@ void UDPVideoStreamSvr::sendStreamData(cMessage *timer)
     }
 }
 
-void UDPVideoStreamSvr::clearStreams()
+void UdpVideoStreamSvr::clearStreams()
 {
     for (auto & elem : streams)
         cancelAndDelete(elem.second.timer);
     streams.clear();
 }
 
-bool UDPVideoStreamSvr::handleNodeStart(IDoneCallback *doneCallback)
+bool UdpVideoStreamSvr::handleNodeStart(IDoneCallback *doneCallback)
 {
     socket.setOutputGate(gate("socketOut"));
     socket.bind(localPort);
@@ -156,14 +156,14 @@ bool UDPVideoStreamSvr::handleNodeStart(IDoneCallback *doneCallback)
     return true;
 }
 
-bool UDPVideoStreamSvr::handleNodeShutdown(IDoneCallback *doneCallback)
+bool UdpVideoStreamSvr::handleNodeShutdown(IDoneCallback *doneCallback)
 {
     clearStreams();
     //TODO if(socket.isOpened()) socket.close();
     return true;
 }
 
-void UDPVideoStreamSvr::handleNodeCrash()
+void UdpVideoStreamSvr::handleNodeCrash()
 {
     clearStreams();
 }
