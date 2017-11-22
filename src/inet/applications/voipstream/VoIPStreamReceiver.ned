@@ -22,7 +22,7 @@ import inet.applications.contract.IApp;
 
 
 //
-// VoIPStreamReceiver listens on an UDP port, and expects to receive VoIP packets on
+// VoipStreamReceiver listens on an UDP port, and expects to receive VoIP packets on
 // it. The received voice is then saved into a result audio file that can be
 // compared with the original for further evaluation. VoIP packets are
 // numbered, and out-of-order packets are discarded (the corresponding voice
@@ -39,7 +39,7 @@ simple VoipStreamReceiver like IApp
         int localPort;
         double playoutDelay @unit(s) = default(20ms);
         string resultFile;
-        @signal[rcvdPk](type=cPacket); // expected type=VoIPStreamPacket
+        @signal[rcvdPk](type=cPacket); // expected type=VoipStreamPacket
         @signal[dropPk](type=cPacket);
         @signal[lostSamples](type=long);
         @signal[lostPackets](type=long);

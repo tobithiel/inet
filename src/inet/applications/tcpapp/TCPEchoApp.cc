@@ -16,7 +16,7 @@
 //
 
 #include "inet/applications/common/SocketTag_m.h"
-#include "inet/applications/tcpapp/TCPEchoApp.h"
+#include "inet/applications/tcpapp/TcpEchoApp.h"
 #include "inet/common/ModuleAccess.h"
 #include "inet/common/ProtocolTag_m.h"
 #include "inet/common/lifecycle/NodeOperations.h"
